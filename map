@@ -1,0 +1,48 @@
+
+
+<link href="lib/leaflet/leaflet.css	" rel="stylesheet">
+<style type="text/css">
+    	div#map { 
+            width: 1200px;
+            height: 800px;
+    	}
+    </style>
+
+
+
+<div id="map"></div>
+
+<script type="text/javascript"  src="lib/leaflet/leaflet.js"></script>
+	<script type="text/javascript">
+		var map;
+
+		initmap();
+
+		function initmap() {
+			// set up the map
+			map = new L.Map('map');
+
+			// create the tile layer with correct attribution
+			var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmUrl2 = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+			var osmAttrib2 = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+			var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+			var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});	
+			var osm2 = new L.TileLayer(osmUrl2,{minZoom: 0, maxZoom: 12, attribution: osmAttrib, id: 'mapbox.streets',accessToken: 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3dwN3Y2MjFsOGwzc3BqcXJqc25oN3YifQ.E1lbdneVZd4xgAocsMWxYA'})
+
+
+
+			// start the map in South-East England
+			map.setView(new L.LatLng(30, 15),3);
+			map.addLayer(osm2);
+
+			//var marker = L.marker([51.5, -0.09]).addTo(mymap);
+		}
+		
+	</script>
+
+
+
+
+
+

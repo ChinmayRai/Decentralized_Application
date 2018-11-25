@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+
+    
+	<title>Signup Page</title>
+</head>
+<body>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="Homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="login_owner()">Property Owner Login</a>
+                    </li>
+                    <li>
+                        <a onclick="login_user()">Property User Login</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading"> <h1 style="text-align:center">Enter your Details Carefully </h3></div>
+      <div class="panel-body" >
+        <div class="row">
+            <h3 align="center">
+                User Name <input type="text" name="User_name">
+            </h3>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 Password <input type="password" name="password">
+            </h3>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 Account Address <input type="text" name="Address">
+            </h3>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 <button type="button" class="btn btn-primary btn-lg" onclick="signup();">Sign Up</button>
+            </h3>
+        </div>
+      </div>
+    </div>
+
+
+    <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
+                </div>
+            </div>
+            <!-- /.row -->
+    </footer>
+
+    <script type="text/javascript">
+        var token = decodeURIComponent(window.location.search).substring(1);
+
+        document.getElementById('Actor').innerText  = token;
+
+        function signup(){
+            var username = document.getElementsByName("User_name")[0].value;
+            var pwd = document.getElementsByName("password")[0].value;
+            var add = document.getElementsByName("Address")[0].value;
+            if(pwd=="1234"){
+                window.location.href = "signup.html"
+                console.log(token)
+            }
+        }
+
+        function login_owner(){
+            window.location.href = "login.html" + "?" +"owner";
+        }
+
+        function login_user(){
+            window.location.href = "login.html" + "?" +"user";
+        }
+    </script>
+
+  
+
+
+</body>
+</html>

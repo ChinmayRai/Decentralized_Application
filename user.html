@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+
+    <link href="lib/leaflet/leaflet.css " rel="stylesheet">
+    <style type="text/css">
+        div#map { 
+            width: 1500px;
+            height: 750px;
+            position: absolute;
+            top: 180px;   
+            left:50px;
+            border: 3px solid #73AD21;
+        }
+    </style>
+
+    
+	<title>User Home</title>
+</head>
+<body>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="Homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="login_owner()">Property Owner Login</a>
+                    </li>
+                    <li>
+                        <a onclick="login_user()">Property User Login</a>
+                    </li>
+                    <li>
+                        <a onclick="login_user()">Your Bookings</a>
+                    </li>
+                    <li>
+                        <a href="settings.html">Account Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="row">
+            <h3 align="center">
+                <input type="text" name="keyword">
+                <h3 align="center">
+                 <button type="button" class="btn btn-primary" onclick="search();">Search</button>
+                </h3>
+
+            </h3>
+        </div>
+
+    <div id="map"></div>
+
+
+        <!--
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
+                </div>
+            </div>
+        </footer>
+        -->
+
+        <script type="text/javascript"  src="lib/leaflet/leaflet.js"></script>
+        <script async defer  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">  </script>
+        
+        <script type="text/javascript">
+            function login_owner(){
+                window.location.href = "login.html" + "?" +"owner";
+            }
+
+            function login_user(){
+                    window.location.href = "login.html" + "?" +"user";
+                }
+        </script>
+        <script type="text/javascript">
+        var map;
+
+        initmap();
+
+        function initmap() {
+            // set up the map
+            map = new L.Map('map');
+
+            // create the tile layer with correct attribution
+            var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            var osmUrl2 = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+            var osmAttrib2 = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+            var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+            var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});   
+            var osm2 = new L.TileLayer(osmUrl2,{minZoom: 0, maxZoom: 12, attribution: osmAttrib, id: 'mapbox.streets',accessToken: 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3dwN3Y2MjFsOGwzc3BqcXJqc25oN3YifQ.E1lbdneVZd4xgAocsMWxYA'})
+
+
+
+            // start the map in South-East England
+            map.setView(new L.LatLng(30, 15),3);
+            map.addLayer(osm2);
+
+            //var marker = L.marker([51.5, -0.09]).addTo(mymap);
+        }
+        function search() {
+            var text = document.getElementsByName("keyword")[0].value;
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({'address': text, function(results, status) {
+                if (status === 'OK') { console.log(results[0].geometry.location); } 
+                else { alert('Geocode was not successful for the following reason: ' + status); }
+        });
+
+           
+        }
+    }
+        
+    </script>
+
+</body>
+</html>
