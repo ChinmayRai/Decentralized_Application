@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<link href="lib/leaflet/leaflet.css	" rel="stylesheet">
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+
+    <style type="text/css">
+    	div#map { 
+            width: 900%;
+            height: 800px;
+    	}
+    </style>
+
+	<title></title>
+</head>
+<body>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="validate_password()">Beneficiary</a>
+                    </li>
+                    <li>
+                        <a href="Investor.html">Investor</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  
+    <div id="map">
+
+    </div>
+
+
+
+
+	<script type="text/javascript"  src="lib/leaflet/leaflet.js"></script>
+	<script type="text/javascript">
+		var map;
+		var ajaxRequest;
+		var plotlist;
+		var plotlayers=[];
+
+		initmap();
+
+		function initmap() {
+			// set up the map
+			map = new L.Map('map');
+
+			// create the tile layer with correct attribution
+			var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmUrl2 = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+			var osmAttrib2 = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+			var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+			var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});	
+			var osm2 = new L.TileLayer(osmUrl2,{minZoom: 0, maxZoom: 12, attribution: osmAttrib, id: 'mapbox.streets',accessToken: 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3dwN3Y2MjFsOGwzc3BqcXJqc25oN3YifQ.E1lbdneVZd4xgAocsMWxYA'})
+
+
+
+			// start the map in South-East England
+			map.setView(new L.LatLng(30, 15),3);
+			map.addLayer(osm2);
+
+			//var marker = L.marker([51.5, -0.09]).addTo(mymap);
+		}
+		
+	</script>
+
+
+</body>
+</html>
