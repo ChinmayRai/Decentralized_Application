@@ -49,6 +49,7 @@
         <!-- /.container -->
     </nav>
 
+    <div class="container">
         <div class="panel-group" id="accordion">
 
             <div class="panel panel-default">
@@ -84,15 +85,56 @@
             </div>
           </div> 
 
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
 
+          	<div class="panel panel-primary">
+		      <div class="panel-heading"> <h3 style="text-align:center">Rent a new Property </h3></div>
+		      <div class="panel-body" >
+		        <div class="row">
+		            <h4 align="center">
+		                Location Address <input type="text" name="address">
+		                Longitude <input type="number" name="lat">
+		                Latitude <input type="number" name="long">
+		            </h4>
+		        </div>
+		        
+		        <hr>
+
+		        <div class="row">
+		            <h4 align="center">
+		                 Size of parking spot in Square meters <input type="Number" name="length"> X  <input type="Number" name="width">      Cost per Hour <input type="Number" name="cost"> 
+		            </h4>
+		        </div>
+		
+		        <hr>
+		
+		        <div class="row">
+		            <h3 align="center">
+		                Slot Availability  From: <input type="time" name="from"> To: <input type="time" name="from">
+		            </h3>
+		        </div>
+		
+		        <hr>
+		
+		        <div class="row">
+		            <h3 align="center">
+		                 <button type="button" class="btn btn-primary btn-lg" onclick="signup();">Rent</button>
+		            </h3>
+		        </div>
+		      </div>
+		    </div>
+		    <footer>
+	            <div class="row">
+	                <div class="col-lg-12">
+	                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
+	                </div>
+	            </div>
+	            <!-- /.row -->
+	        </footer>
+
+
+		</div>
+
+	        
         <script type="text/javascript">
             function login_owner(){
                 window.location.href = "login.html" + "?" +"owner";
