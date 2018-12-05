@@ -1,0 +1,45 @@
+function authenticate (string username, string password) returns boolean
+
+struct parkingLot {
+		address owner;
+		location lat;
+		location long;
+		string name;
+		parkingSpot[] spots;
+		uint num;
+		uint price;
+		uint size; // 0 = small, 1 = medium, 2 = big
+	}
+
+	struct parkingSpot{
+		bool status;
+		address renter;
+		uint duration;
+		uint startTime;
+		uint [] BookingIndex;
+	}
+
+function ownerProperties (address user) returns uint []
+function removeRentProperty (address user, uint index) returns boolean 
+function addRentOutSpot(address owner, string lat, string long, uint num, uint price, uint size)
+
+mapping (string -> string) userPass 
+mapping (string -> address) userAcc
+
+function signUp (string username, string password, address account) returns boolean
+
+booking [] reservations;
+
+struct user {
+		uint [] BookingIndex;
+}
+
+mapping (address user -> struct user) userData
+
+struct booking {
+	uint parkingLot;
+	uint parkingSpot;
+	uint start; 
+	uint end;
+	private string password;
+}
