@@ -16,6 +16,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="js/web3.min.js"></script>
     
     <style type="text/css">
         #map { 
@@ -108,13 +109,15 @@
        	
         
         <script type="text/javascript">
-            function login_owner(){
-                window.location.href = "login.html" + "?" +"owner";
-            }
+          function login_owner(){
+               window.open("login.html" + "?" +"owner", '_blank');
+               window.close();
+          }
 
-            function login_user(){
-                    window.location.href = "login.html" + "?" +"user";
-                }
+          function login_user(){
+              window.open("login.html" + "?" +"user", '_blank');
+              window.close();
+          }
         </script>
         
 
@@ -145,6 +148,23 @@
         }
                
         
+    	</script>
+
+    	<script type="text/javascript">
+    		if (typeof web3 !== 'undefined') {
+	              web3 = new Web3(web3.currentProvider);
+	        } else {
+	          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+	        }
+
+	        var abi=[];
+	        var contract = web3.eth.contract(abi).at(Contract_add);
+
+	        var txo = {from:Owner_account, gasPrice:'20000000000',gas:'1000000'};
+	        var account_pwd = prompt("Account Password:","");
+	        
+	        var add = decodeURIComponent(window.location.search).substring(1)
+
     	</script>
 
 	</body>

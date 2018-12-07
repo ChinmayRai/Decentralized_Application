@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="js/web3.min.js"></script>
  
     
 	<title>Login Page</title>
@@ -68,7 +69,7 @@
             </h3>
         </div>
         <div>
-            <h5 align="center">New User? Create New Account: <a href="signup.html">SignUp</a></h5> 
+            <h5 align="center">New User? Create New Account: <a onclick="signup();">SignUp</a></h5> 
         </div>
       </div>
     </div>
@@ -85,16 +86,35 @@
 
 
     <script type="text/javascript">
-        var token = decodeURIComponent(window.location.search).substring(1);
+
+         var token = decodeURIComponent(window.location.search).substring(1);
 
         document.getElementById('Actor').innerText  = token;
 
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        try {
+          web3.eth.accounts;
+        }
+        catch(err) {
+          alert("You not connected to ethereum");
+        }
+
+        var abi=[];
+
+        var contract = web3.eth.contract(abi).at(Contract_add);
+
         function auth(){
+            var usr = document.getElementsByName("User_name")[0].value;
             var pwd = document.getElementsByName("password")[0].value;
-            if(pwd=="1234"){
-                window.location.href = token+".html"
-                console.log(token)
-            }
+                if(contract.userPass(usr)==pwd){
+                    var add = contract.userAcc(usr);
+                    window.location.href = token+".html"+"?"+add
+                }
         }
 
         function login_owner(){
@@ -103,6 +123,11 @@
 
         function login_user(){
             window.location.href = "login.html" + "?" +"user";
+
+        }
+
+        function signup(){
+            window.open("signup.html", '_blank');
         }
     </script>
 

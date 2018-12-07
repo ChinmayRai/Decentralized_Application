@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
     
 	<title>Home Page</title>
 </head>
@@ -86,12 +87,31 @@
 	 
 
     <script type="text/javascript">
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        try {
+          web3.eth.accounts;
+        }
+        catch(err) {
+          alert("You not connected to ethereum");
+        }
+
+        var abi=[];
+
+        //var contract = web3.eth.contract(abi).at(Contract_add);
+        
     function login_owner(){
-            window.location.href = "login.html" + "?" +"owner";
+            //window.location.href = "login.html" + "?" +"owner";
+            window.open("login.html" + "?" +"owner", '_blank');
         }
 
     function login_user(){
-            window.location.href = "login.html" + "?" +"user";
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("login.html" + "?" +"user", '_blank');
         }
 
     </script>

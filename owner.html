@@ -14,7 +14,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="js/web3.min.js"></script>
+    <style type="text/css">
+      span:before{
+          content:" "; 
+          display:inline-block; 
+          width:90px;
+      }
+    </style>
     
 	<title>Owner Home</title>
 </head>
@@ -49,7 +56,7 @@
         <!-- /.container -->
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="panel-group" id="accordion">
 
             <div class="panel panel-default">
@@ -91,17 +98,34 @@
 		      <div class="panel-body" >
 		        <div class="row">
 		            <h4 align="center">
+                  <span>
 		                Location Address <input type="text" name="address">
+                  </span>
+                  <span>
 		                Longitude <input type="number" name="lat">
+                  </span>
+                  <span>                    
 		                Latitude <input type="number" name="long">
-		            </h4>
+		              </span>
+                </h4>
 		        </div>
 		        
 		        <hr>
 
 		        <div class="row">
 		            <h4 align="center">
-		                 Size of parking spot in Square meters <input type="Number" name="length"> X  <input type="Number" name="width">      Cost per Hour <input type="Number" name="cost"> 
+                  <span>
+		                Size :
+                    <label class="checkbox-inline"><input type="checkbox" name="size" value="0">Small</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="size" value="1">Medium</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="size" value="2">Big</label>  
+                  </span>   
+                  <span> 
+                    Cost per Hour <input type="Number" name="cost"> 
+                  </span>
+                  <span> 
+                    Number of parking spots <input type="Number" name="num"> 
+                  </span> 
 		            </h4>
 		        </div>
 		
@@ -109,15 +133,7 @@
 		
 		        <div class="row">
 		            <h3 align="center">
-		                Slot Availability  From: <input type="time" name="from"> To: <input type="time" name="from">
-		            </h3>
-		        </div>
-		
-		        <hr>
-		
-		        <div class="row">
-		            <h3 align="center">
-		                 <button type="button" class="btn btn-primary btn-lg" onclick="signup();">Rent</button>
+		                 <button type="button" class="btn btn-primary btn-lg" onclick="addRentOutSpot();">Rent</button>
 		            </h3>
 		        </div>
 		      </div>
@@ -136,14 +152,56 @@
 
 	        
         <script type="text/javascript">
-            function login_owner(){
-                window.location.href = "login.html" + "?" +"owner";
+
+          var add = decodeURIComponent(window.location.search).substring(1);
+
+          if (typeof web3 !== 'undefined') {
+              web3 = new Web3(web3.currentProvider);
+          } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+          }
+
+            try {
+            web3.eth.accounts;
+          }
+          catch(err) {
+            alert("You not connected to ethereum");
+          }
+
+          var abi=[];
+          var contract = web3.eth.contract(abi).at(Contract_add);
+
+          function addRentOutSpot(){
+            var address = document.getElementsByName("address")[0].value;
+            var lat = document.getElementsByName("lat")[0].value;
+            var long = document.getElementsByName("long")[0].value;
+            var cost = document.getElementsByName("cost")[0].value;
+            var num = document.getElementsByName("num")[0].value;
+            var size = document.getElementsByName("size")[0].value;
+            var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
+            var accpwd = prompt("Enter Ethereum Account Password:","");
+            if(web3.personal.unlockAccount(add,accpwd,15)==true){
+                contract.addRentOutSpot(add, lat, long, address, num, cost, size,txo);
             }
 
-            function login_user(){
-                    window.location.href = "login.html" + "?" +"user";
-                }
+
+          }
+
+          function login_owner(){
+               window.open("login.html" + "?" +"owner", '_blank');
+               window.close();
+          }
+
+          function login_user(){
+              window.open("login.html" + "?" +"user", '_blank');
+              window.close();
+          }
         </script>
 
 </body>
 </html>
+
+<!--
+  var txo = {from:Owner_account, gasPrice:'20000000000',gas:'1000000'};
+  var account_pwd = prompt("Account Password:","");
+-->

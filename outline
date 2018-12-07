@@ -19,9 +19,9 @@ struct parkingLot {
 		uint [] BookingIndex;
 	}
 
-function ownerProperties (address user) returns uint []
+function ownerProperties (address user) returns (uint256[])
 function removeRentProperty (address user, uint index) returns boolean 
-function addRentOutSpot(address owner, string lat, string long, uint num, uint price, uint size)
+function addRentOutSpot(address owner, string lat, string long, string name, uint num, uint price, uint size)
 
 mapping (string -> string) userPass 
 mapping (string -> address) userAcc
