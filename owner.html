@@ -19,7 +19,7 @@
       span:before{
           content:" "; 
           display:inline-block; 
-          width:90px;
+          width:100px;
       }
     </style>
     
@@ -52,6 +52,12 @@
         </div>
         <!-- /.container -->
     </nav>
+
+    <div class="container">
+      <div class="panel-group" id="accordion">        
+        <div id=cont></div>         
+      </div>
+
     <script type="text/javascript">
       var add = decodeURIComponent(window.location.search).substring(1);
       if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider); }
@@ -60,133 +66,145 @@
       try {web3.eth.accounts;}
       catch(err) {alert("You not connected to ethereum");}
       var abi=[];
-      var contract = web3.eth.contract(abi).at(Contract_add);
-      
-     
+      //var contract = web3.eth.contract(abi).at(Contract_add);
+
+      //var list = contract.ownerData(add).parkingLotIndex();
+      var list = [1,2,3,4];
+      var x="",s="",i;
+      for (i = 1; i <= list.length; i++) {
+        var name = "halla";//contract.parkingLots(list[i-1])[3];
+        var lat = 38.74334;//contract.parkingLots(list[i-1]).[1][0]+contract.parkingLots(list[i-1]).[1][0]/60;
+        var long = 120.433;//contract.parkingLots(list[i-1]).[2][0]+;
+        var num = 6;//contract.parkingLots(list[i-1]).[5];
+        var cost = 12;//contract.parkingLots(list[i-1]).[6];
+        var size = 1;//contract.parkingLots(list[i-1]).[7];
+        x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>Property " + i + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>" +name +"</span><span><a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><br><span> no. of spots :   "+ num + "</span><span>    @" + cost +"   ETH/hr</span><br><br><span>Spot number <input type='number' name='i'></span><span><button type='button' class='btn btn-primary btn' onclick='info("+list[i-1]+");'>Get Info</button></span><br><span>Status : <div id='status'></div></span>"+ "</div></div></div>";
+      }
+       document.getElementById("cont").innerHTML = x;
+       function info(n){
+        var i = document.getElementsByName('i').innerText[0].value;
+        var arr = contract.parkingLots(n)[4];
+        if(arr[i][0]){document.getElementById('status').innerText="Rented by:"+arr[i][1];}
+        else{document.getElementById('status').innerText="Not Rented";}
+       }
+          
     </script>
 
-    <div class="container-fluid">
-        <div class="panel-group" id="accordion">
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Property 1</a>
-                </h4>
-              </div>
-              <div id="collapse1" class="panel-collapse collapse in">
-                <div class="panel-body"> Information on various attributes of the Property</div>
-              </div>
-            </div>
+      <div class="panel panel-primary">
 
-           
-        </div> 
+		    <div class="panel-heading"> <h3 style="text-align:center">Rent a new Property </h3></div>
 
+		    <div class="panel-body" >
 
-          	<div class="panel panel-primary">
-		      <div class="panel-heading"> <h3 style="text-align:center">Rent a new Property </h3></div>
-		      <div class="panel-body" >
-		        <div class="row">
-		            <h4 align="center">
-                  <span>
-		                Location Address <input type="text" name="address">
-                  </span>
-                  <span>
-		                Longitude <input type="number" name="lat">
-                  </span>
-                  <span>                    
-		                Latitude <input type="number" name="long">
-		              </span>
-                </h4>
-		        </div>
-		        
-		        <hr>
-
-		        <div class="row">
-		            <h4 align="center">
-                  <span>
-		                Size :
-                    <label class="checkbox-inline"><input type="checkbox" name="size" value="0">Small</label>
-                    <label class="checkbox-inline"><input type="checkbox" name="size" value="1">Medium</label>
-                    <label class="checkbox-inline"><input type="checkbox" name="size" value="2">Big</label>  
-                  </span>   
-                  <span> 
-                    Cost per Hour <input type="Number" name="cost"> 
-                  </span>
-                  <span> 
-                    Number of parking spots <input type="Number" name="num"> 
-                  </span> 
-		            </h4>
-		        </div>
-		
-		        <hr>
-		
-		        <div class="row">
-		            <h3 align="center">
-		                 <button type="button" class="btn btn-primary btn-lg" onclick="addRentOutSpot();">Rent</button>
-		            </h3>
-		        </div>
+		      <div class="row">
+		         <h4 align="center">
+              <span>
+		            Location Address <input type="text" name="address">
+              </span>
+              <span> 
+                Number of parking spots <input type="Number" name="num"> 
+              </span> 
+            </h4>
 		      </div>
+		        
+		      <hr>
+
+          <div class="row">
+             <h4 align="center">
+              <span>
+                Longitude <input type="number" name="lat">
+              </span>
+              <span>                    
+                Latitude <input type="number" name="long">
+              </span>              
+            </h4>
+          </div>
+            
+          <hr>
+
+		      <div class="row">
+		        <h4 align="center">
+              <span>
+		             Size :
+                <label class="checkbox-inline"><input type="checkbox" name="size" value="0">Small</label>
+                <label class="checkbox-inline"><input type="checkbox" name="size" value="1">Medium</label>
+                <label class="checkbox-inline"><input type="checkbox" name="size" value="2">Big</label>  
+              </span>   
+              <span> 
+                Cost per Hour <input type="Number" name="cost"> 
+              </span>
+		        </h4>
+		      </div>
+		
+		      <hr>
+		
+		      <div class="row">
+		        <h3 align="center">
+		          <button type="button" class="btn btn-primary btn-lg" onclick="addRentOutSpot();">Rent</button>
+		        </h3>
+		      </div>
+
 		    </div>
-		    <footer>
-	            <div class="row">
-	                <div class="col-lg-12">
-	                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
-	                </div>
-	            </div>
-	            <!-- /.row -->
-	        </footer>
+
+		  </div>
+
+		  <footer>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
+	        </div>
+	      </div>
+      </footer>
 
 
 		</div>
 
 	        
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-          var add = decodeURIComponent(window.location.search).substring(1);
+      var add = decodeURIComponent(window.location.search).substring(1);
+      if (typeof web3 !== 'undefined') {
+          web3 = new Web3(web3.currentProvider);
+      } else {
+        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+      }
+      try {
+        web3.eth.accounts;
+      }
+      catch(err) {
+        alert("You not connected to ethereum");
+      }
+      var abi=[];
+      var contract = web3.eth.contract(abi).at(Contract_add);
 
-          if (typeof web3 !== 'undefined') {
-              web3 = new Web3(web3.currentProvider);
-          } else {
-            web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-          }
+      function addRentOutSpot(){
+        var address = document.getElementsByName("address")[0].value;
+        var lat = document.getElementsByName("lat")[0].value;
+        var long = document.getElementsByName("long")[0].value;
+        var cost = document.getElementsByName("cost")[0].value;
+        var num = document.getElementsByName("num")[0].value;
+        var size = document.getElementsByName("size")[0].value;
+        var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
 
-            try {
-            web3.eth.accounts;
-          }
-          catch(err) {
-            alert("You not connected to ethereum");
-          }
+        var accpwd = prompt("Enter Ethereum Account Password:","");
+        if(web3.personal.unlockAccount(add,accpwd,15)==true){
+            contract.addRentOutSpot(add, lat, long, address, num, cost, size,txo);
+        }     
 
-          var abi=[];
-          var contract = web3.eth.contract(abi).at(Contract_add);
+      }
 
-          function addRentOutSpot(){
-            var address = document.getElementsByName("address")[0].value;
-            var lat = document.getElementsByName("lat")[0].value;
-            var long = document.getElementsByName("long")[0].value;
-            var cost = document.getElementsByName("cost")[0].value;
-            var num = document.getElementsByName("num")[0].value;
-            var size = document.getElementsByName("size")[0].value;
-            var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
-            var accpwd = prompt("Enter Ethereum Account Password:","");
-            if(web3.personal.unlockAccount(add,accpwd,15)==true){
-                contract.addRentOutSpot(add, lat, long, address, num, cost, size,txo);
-            }     
-          }
+      function login_owner(){
+        window.open("login.html" + "?" +"owner", '_blank');
+        window.close();
+      }
+      function login_user(){
+        window.open("login.html" + "?" +"user", '_blank');
+        window.close();
+      }
+    </script>
 
-          function login_owner(){
-               window.open("login.html" + "?" +"owner", '_blank');
-               window.close();
-          }
-
-          function login_user(){
-              window.open("login.html" + "?" +"user", '_blank');
-              window.close();
-          }
-        </script>
-
-</body>
+  </body>
 </html>
 
 <!--

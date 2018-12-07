@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <style type="text/css">
+      span:before{
+          content:" "; 
+          display:inline-block; 
+          width:100px;
+      }
+    </style>
+    
+	<title>Owner Home</title>
+</head>
+<body>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="Homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="login_owner()">Property Owner Login</a>
+                    </li>
+                    <li>
+                        <a onclick="login_user()">Property User Login</a>
+                    </li>
+                    <li>
+                        <a href="settings.html">Account Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading"> <h3 style="text-align:center">Details of Property : <div id="name"></div></h3></div>
+            <div class="panel-body" >
+                <div class="row">
+                    <h4 align="center">
+                    <span> 
+                        Lat-Long : <div id="lat"></div>-<div id="long"></div>
+                    </span> 
+                    <span>
+                      # (spots) :  <div id="num"></div>
+                    </span>
+                    <span>
+                      @ rate of :  <div id="cost"></div> ETH/hr
+                    </span>
+                    </h4>
+                </div>
+                         
+                <hr>
+
+                <div class="row">
+                   <h4 align="center">
+                    <span>
+                      Select the index of spot  <input type="number" name="i">
+                    </span>
+                    <span>              
+                      <button type="button" class="btn btn-primary btn-lg" onclick="info();">Get Info</button>  
+                    </span>              
+                  </h4>
+                </div>
+            
+                <hr>
+
+                <div class="row">
+                    <h4 align="center">
+                        <span> 
+                            Status : <div id="status"></div>
+                        </span>   
+                        <span> 
+                        </span>
+                    </h4>
+                </div>
+        
+            </div>
+
+          </div>
+
+        <footer>
+          <div class="row">
+            <div class="col-lg-12">
+              <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
+            </div>
+          </div>
+        </footer>
+
+
+    </div>
+
+    <script type="text/javascript">
+      var n = decodeURIComponent(window.location.search).substring(1);
+      if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider); }
+      else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+
+      try {web3.eth.accounts;}
+      catch(err) {alert("You not connected to ethereum");}
+      var abi=[];
+      //var contract = web3.eth.contract(abi).at(Contract_add);
+
+      document.getElementById('name').innerText = contract.parkingLots(n)[3];
+      document.getElementById('lat').innerText= contract.parkingLots(n)[1];
+      document.getElementById('long').innerText=contract.parkingLots(n)[2];
+      document.getElementById('num').innerText=contract.parkingLots(n)[5];
+      document.getElementById('cost').innerText=contract.parkingLots(n)[6];
+
+      var arr = contract.parkingLots(n)[4];
+
+      function info() {
+        var i = document.getElementsByName('i').innerText[0].value;
+        if(arr[i][0]){document.getElementById('status').innerText="Rented by:"+arr[i][1];}
+        else{document.getElementById('status').innerText="Not Rented";}
+
+
+          // body...
+      }
+
+
+    </script>

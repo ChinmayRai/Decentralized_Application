@@ -28,8 +28,14 @@ mapping (string -> address) userAcc
 
 function signUp (string username, string password, address account) returns boolean
 
-booking [] reservations;
+booking [] reservations; 
+parkingLot [] parkingLots;
 
+struct location {
+	uint degrees;
+	uint minutes;
+	//can use fixed point numbers
+}
 struct user {
 		uint[] BookingIndex;
 }
@@ -38,7 +44,7 @@ struct owner {
 }
 
 mapping (address user -> struct user) userData
-mapping (address owner -> struct user) ownerData
+mapping (address owner -> struct owner) ownerData
 
 
 struct booking {
