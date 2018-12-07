@@ -44,9 +44,6 @@
                         <a onclick="login_user()">Property User Login</a>
                     </li>
                     <li>
-                        <a onclick="login_user()">Your Properties</a>
-                    </li>
-                    <li>
                         <a href="settings.html">Account Settings</a>
                     </li>
                 </ul>
@@ -55,6 +52,18 @@
         </div>
         <!-- /.container -->
     </nav>
+    <script type="text/javascript">
+      var add = decodeURIComponent(window.location.search).substring(1);
+      if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider); }
+      else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+
+      try {web3.eth.accounts;}
+      catch(err) {alert("You not connected to ethereum");}
+      var abi=[];
+      var contract = web3.eth.contract(abi).at(Contract_add);
+      
+     
+    </script>
 
     <div class="container-fluid">
         <div class="panel-group" id="accordion">
@@ -70,27 +79,8 @@
               </div>
             </div>
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Property 2</a>
-                </h4>
-              </div>
-              <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body"> Information on various attributes of the Property</div>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Property 3</a>
-                </h4>
-              </div>
-              <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body"> Information on various attributes of the Property</div>
-              </div>
-            </div>
-          </div> 
+           
+        </div> 
 
 
           	<div class="panel panel-primary">
@@ -182,9 +172,7 @@
             var accpwd = prompt("Enter Ethereum Account Password:","");
             if(web3.personal.unlockAccount(add,accpwd,15)==true){
                 contract.addRentOutSpot(add, lat, long, address, num, cost, size,txo);
-            }
-
-
+            }     
           }
 
           function login_owner(){
