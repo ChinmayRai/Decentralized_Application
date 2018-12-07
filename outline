@@ -31,10 +31,15 @@ function signUp (string username, string password, address account) returns bool
 booking [] reservations;
 
 struct user {
-		uint [] BookingIndex;
+		uint[] BookingIndex;
+}
+struct owner {
+	uint[] parkingLotIndex; 
 }
 
 mapping (address user -> struct user) userData
+mapping (address owner -> struct user) ownerData
+
 
 struct booking {
 	uint parkingLot;
