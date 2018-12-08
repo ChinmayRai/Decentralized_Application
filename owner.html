@@ -68,9 +68,9 @@
       var abi=[];
       //var contract = web3.eth.contract(abi).at(Contract_add);
 
-      //var list = contract.ownerData(add).parkingLotIndex();
+      //var list = contract.ownerData(add)[0];
       var list = [1,2,3,4];
-      var x="",s="",i;
+      var x="",i;
       for (i = 1; i <= list.length; i++) {
         var name = "halla";//contract.parkingLots(list[i-1])[3];
         var lat = 38.74334;//contract.parkingLots(list[i-1]).[1][0]+contract.parkingLots(list[i-1]).[1][0]/60;

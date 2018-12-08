@@ -35,6 +35,11 @@
 		  border-radius: 50%;
 		  cursor: pointer;
 		}
+		span:before{
+          content:" "; 
+          display:inline-block; 
+          width:15px;
+      	}
     </style>
 
     
@@ -59,9 +64,6 @@
                         <a onclick="login_user()">Property User Login</a>
                     </li>
                     <li>
-                        <a onclick="login_user()">Your Bookings</a>
-                    </li>
-                    <li>
                         <a href="settings.html">Account Settings</a>
                     </li>
                 </ul>
@@ -79,75 +81,72 @@
     			<div id="map"></div>
     		</div>
     		<div class="col-sm-3">
-	    		<div>
-	    			<div class="panel panel-primary"><div class="panel-heading">Your Bookings</div></div>
-	    			<ul class="list-group" style="width:95%;">
-			  			<li class="list-group-item active" onclick="mark(1);">Postech</li>
-			  			<li class="list-group-item" onclick="mark(2);">New Delhi</li>
-			  			<li class="list-group-item" onclick="mark(3);">Busan</li>
-			  			<li class="list-group-item" onclick="mark(4);">New York</li>
-			  			<li class="list-group-item" onclick="mark(5);">Mumbai</li>
-					</ul>
-	    		</div>
+    			<div class="panel panel-primary">
+    				<div class="panel-heading"> <h3 style="text-align:center">Your Bookings</h3></div>
+    				<div class="panel-body" >
+    					<div class="panel-group" id="accordion">        
+					    	<div id=cont></div>         
+					    </div>
+					</div>
+				</div>
     		</div>
     	</div>
     </div>
- <!-- 
-	     <div class="row">
-	    	 <footer>
-	            <div class="row">
-	                <div class="col-lg-12">
-	                    <p>Copyright &copy; Chinmay Rai and Abhinav Kalra 2018</p>
-	                </div>
-	            </div>
-	        </footer>
-   		 </div>
--->
+
+    	<script type="text/javascript">
+		    var add = decodeURIComponent(window.location.search).substring(1);
+		    if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider); }
+		    else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+    		try {web3.eth.accounts;}
+		    catch(err) {alert("You not connected to ethereum");}
+
+		    var abi=[];
+		    //var contract = web3.eth.contract(abi).at(Contract_add);
+    		//var list = contract.userData(add)[0];
+
+		    var list = [1,2,3,4];
+		    var x="",i;
+
+		    for (i = 0; i < list.length; i++) {
+		      var parking_lot_name = "halla";//contract.reservations(list[i])[0][3];
+		      var lat = 38.74334;//contract.reservations(list[i])[0][1]
+		      var long = 120.433;//contract.reservations(list[i])[0][2]
+		      var cost = 120.433;//contract.reservations(list[i])[0][6]
+		      var parking_spot = 38;//contract.reservations(list[i])[1];
+		      var from = 120.433;//contract.reservations(list[i])[2]+;
+		      var to = 6;//contract.reservations(list[i]).[3];
+		      x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>" + parking_lot_name + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>  Location: <a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><span>Cost:   " + cost +"   ETH/hr</span><br><span>Booked From:   "+ lat+"</span><br><span>Booked Till:   "+long+"</span></div></div></div>";
+		    }
+		     document.getElementById("cont").innerHTML = x;
+		  </script>
 
 
-        
-       	
-        
         <script type="text/javascript">
-          function login_owner(){
-               window.open("login.html" + "?" +"owner", '_blank');
-               window.close();
-          }
+	        var map;
 
-          function login_user(){
-              window.open("login.html" + "?" +"user", '_blank');
-              window.close();
-          }
-        </script>
-        
+	        initmap();
+	        mark();
 
-        <script type="text/javascript">
-        var map;
+	        function initmap() {
+	            mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3h3ZTRwajBzd2gzcXBjNzB1dGdnbXoifQ.aBpr98CTJrR3AaWbhP8BQg';
+	            map = new mapboxgl.Map({container: 'map', style: 'mapbox://styles/mapbox/streets-v9',zoom: 2});
 
-        initmap();
-        mark();
+				map.addControl(new MapboxGeocoder({ accessToken: mapboxgl.accessToken}));
+				map.addControl(new mapboxgl.NavigationControl());
+	        }
+	        function mark(){
+	        	
+	        	var el = document.createElement('div');
+				el.className = 'marker';
 
-        function initmap() {
-            mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3h3ZTRwajBzd2gzcXBjNzB1dGdnbXoifQ.aBpr98CTJrR3AaWbhP8BQg';
-            map = new mapboxgl.Map({container: 'map', style: 'mapbox://styles/mapbox/streets-v9',zoom: 2});
-
-			map.addControl(new MapboxGeocoder({ accessToken: mapboxgl.accessToken}));
-			map.addControl(new mapboxgl.NavigationControl());
-        }
-        function mark(){
-        	
-        	var el = document.createElement('div');
-			el.className = 'marker';
-
-			  // make a marker for each feature and add to the map
-			  new mapboxgl.Marker(el).setLngLat([28.5503288,77.1912467]).addTo(map);
-        	//var latLngs = [ marker.getLatLng() ];
-  			//var markerBounds = L.latLngBounds(latLngs);
-  			//map.fitBounds(markerBounds);
-  			console.log(1)
-        }
+				  // make a marker for each feature and add to the map
+				  new mapboxgl.Marker(el).setLngLat([28.5503288,77.1912467]).addTo(map);
+	        	//var latLngs = [ marker.getLatLng() ];
+	  			//var markerBounds = L.latLngBounds(latLngs);
+	  			//map.fitBounds(markerBounds);
+	  			console.log(1)
+	        }
                
-        
     	</script>
 
     	<script type="text/javascript">
@@ -157,6 +156,13 @@
 	          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 	        }
 
+	        try {
+		      web3.eth.accounts;
+		    }
+		    catch(err) {
+		      alert("You not connected to ethereum");
+		    }
+
 	        var abi=[];
 	        var contract = web3.eth.contract(abi).at(Contract_add);
 
@@ -164,6 +170,16 @@
 	        var account_pwd = prompt("Account Password:","");
 	        
 	        var add = decodeURIComponent(window.location.search).substring(1)
+
+	        function login_owner(){
+               window.open("login.html" + "?" +"owner", '_blank');
+               window.close();
+            }
+
+            function login_user(){
+                window.open("login.html" + "?" +"user", '_blank');
+                window.close();
+            }
 
     	</script>
 
