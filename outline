@@ -19,7 +19,7 @@ struct parkingLot {
 		uint [] BookingIndex;
 	}
 
-function ownerProperties (address user) returns (uint256[])
+function ownerProperties (address user) returns (uint [])
 function removeRentProperty (address user, uint index) returns boolean 
 function addRentOutSpot(address owner, string lat, string long, string name, uint num, uint price, uint size)
 
@@ -43,8 +43,8 @@ struct owner {
 	uint[] parkingLotIndex; 
 }
 
-mapping (address user -> struct user) userData
-mapping (address owner -> struct owner) ownerData
+mapping (address user -> struct user) userData;
+mapping (address owner -> uint []) ownerData; //points towards indices of lots owned by an owner
 
 
 struct booking {
