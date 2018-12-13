@@ -20,10 +20,10 @@
     
     <style type="text/css">
         #map { 
-            width: 1370px;
+            width: 1300px;
             height: 880px;
-            position: absolute;  
-            left:10px;
+            position: absolute;
+            left:3px;
             border: 3px solid #4285f4;
         }
 
@@ -35,11 +35,25 @@
 		  border-radius: 50%;
 		  cursor: pointer;
 		}
+		.mapboxgl-popup {
+		  max-width: 200px;
+		}
+
+		.mapboxgl-popup-content {
+		  text-align: center;
+		  font-family: 'Open Sans', sans-serif;
+		}
 		span:before{
           content:" "; 
           display:inline-block; 
           width:15px;
       	}
+      	#colum{
+      		position:absolute;
+      		left:1296px;
+      		width: 30%;
+      	}
+
     </style>
 
     
@@ -75,12 +89,12 @@
 
     <div class="container-fluid">
 	    <div class="row">
-	    	<div class="col-sm-9">
+	    	<div class="col-sm-8">
 	    		<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
 				<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>	
     			<div id="map"></div>
     		</div>
-    		<div class="col-sm-3">
+    		<div class="col-sm-4" id=colum>
     			<div class="panel panel-primary">
     				<div class="panel-heading"> <h3 style="text-align:center">Your Bookings</h3></div>
     				<div class="panel-body" >
@@ -107,17 +121,41 @@
 		    var list = [1,2,3,4];
 		    var x="",i;
 
+		    var geojson = {};
+			geojson['type'] = 'FeatureCollection';
+			geojson['features'] = [];
+
+			
+		   
+
+			var latu =[36.0528,28.64480,51.509865,40.730610]
+			var longu = [129.3393,77.216721,-0.118092,-73.935242]
+			var title = ['Pohang','New Delhi','London','New york']
+
 		    for (i = 0; i < list.length; i++) {
-		      var parking_lot_name = "halla";//contract.reservations(list[i])[0][3];
-		      var lat = 38.74334;//contract.reservations(list[i])[0][1]
-		      var long = 120.433;//contract.reservations(list[i])[0][2]
+		      var parking_lot_name = title[i];//contract.reservations(list[i])[0][3];
+		      var lat = latu[i];//contract.reservations(list[i])[0][1]
+		      var long = longu[i];//contract.reservations(list[i])[0][2]
 		      var cost = 120.433;//contract.reservations(list[i])[0][6]
 		      var parking_spot = 38;//contract.reservations(list[i])[1];
-		      var from = 120.433;//contract.reservations(list[i])[2]+;
-		      var to = 6;//contract.reservations(list[i]).[3];
-		      x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>" + parking_lot_name + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>  Location: <a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><span>Cost:   " + cost +"   ETH/hr</span><br><span>Booked From:   "+ lat+"</span><br><span>Booked Till:   "+long+"</span></div></div></div>";
+		      var from = 1544246589;//contract.reservations(list[i])[2];
+		      var date_from = new Date(from*1000);
+
+		      
+			  var newFeature = {
+			  	"type": "Feature","geometry": {"type": "Point","coordinates": [long,lat]},
+			  	"properties": {	"title": parking_lot_name ,	"description": cost, "link":12}
+			  }
+				
+			  geojson['features'].push(newFeature);
+				
+
+		      var to = 1544249000;//contract.reservations(list[i]).[3];
+		      var date_to = new Date(from*1000);
+		      x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>" + parking_lot_name + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>  Location: <a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><span>Cost:   " + cost +"   ETH/hr</span><br><span>From:   "+ date_from+"</span><br><span>Till:   "+date_to +"</span></div></div></div>";
 		    }
 		     document.getElementById("cont").innerHTML = x;
+
 		  </script>
 
 
@@ -130,21 +168,56 @@
 	        function initmap() {
 	            mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpbm1heTAxIiwiYSI6ImNqb3h3ZTRwajBzd2gzcXBjNzB1dGdnbXoifQ.aBpr98CTJrR3AaWbhP8BQg';
 	            map = new mapboxgl.Map({container: 'map', style: 'mapbox://styles/mapbox/streets-v9',zoom: 2});
-
-				map.addControl(new MapboxGeocoder({ accessToken: mapboxgl.accessToken}));
+	            var geocoder = new MapboxGeocoder({ accessToken: mapboxgl.accessToken});
+				map.addControl(geocoder);
 				map.addControl(new mapboxgl.NavigationControl());
+				
+				map.on('load', function() {
+				    map.addSource('single-point', {
+				        "type": "geojson",
+				        "data": {
+				            "type": "FeatureCollection",
+				            "features": []
+				        }
+				    });
+
+				    map.addLayer({
+				        "id": "point",
+				        "source": "single-point",
+				        "type": "circle",
+				        "paint": {
+				            "circle-radius": 10,
+				            "circle-color": "#007cbf"
+				        }
+				    });
+
+				    // Listen for the `result` event from the MapboxGeocoder that is triggered when a user
+				    // makes a selection and add a symbol that matches the result.
+				    geocoder.on('result', function(ev) {
+				        map.getSource('single-point').setData(ev.result.geometry);
+				        search(ev.result.geometry.coordinates);
+				    });
+				});
 	        }
 	        function mark(){
-	        	
-	        	var el = document.createElement('div');
-				el.className = 'marker';
+
+	        	geojson.features.forEach(function(marker) {
+
+				  // create a HTML element for each feature
+				  var el = document.createElement('div');
+				  el.className = 'marker';
 
 				  // make a marker for each feature and add to the map
-				  new mapboxgl.Marker(el).setLngLat([28.5503288,77.1912467]).addTo(map);
-	        	//var latLngs = [ marker.getLatLng() ];
-	  			//var markerBounds = L.latLngBounds(latLngs);
-	  			//map.fitBounds(markerBounds);
-	  			console.log(1)
+					new mapboxgl.Marker(el)
+						.setLngLat(marker.geometry.coordinates)
+						.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+		  				.setHTML("<h3>" + marker.properties.title + "</h3><p>" + marker.properties.description + "</p><p><button type='button' class='btn btn-primary btn-sm' onclick='book.html?"+marker.properties.link+"'>Book</button></p>"))
+						.addTo(map);
+					});
+	        }
+
+	        function search(s){
+	        	alert(s);
 	        }
                
     	</script>

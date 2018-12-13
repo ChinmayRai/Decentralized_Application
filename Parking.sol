@@ -77,16 +77,18 @@ contract Parking {
 		booking  [] b;
 		parkingSpot s;
 		s.records = b;
+		parkingLot p;
 		parkingSpot [] list;
 		for (uint i=0; i<num; i++) list.push(s);
-		lots[numLots].spots = list;//parkingLot(owner, lat, long, name, list, num, price,size);
-		lots[numLots].owner = owner;
-		lots[numLots].lat = lat;
-		lots[numLots].long = long;
-		lots[numLots].name = name;
-		lots[numLots].num = num;
-		lots[numLots].price = price;
-		lots[numLots].size = size;
+		p.spots = list;//parkingLot(owner, lat, long, name, list, num, price,size);
+		p.owner = owner;
+		p.lat = lat;
+		p.long = long;
+		p.name = name;
+		p.num = num;
+		p.price = price;
+		p.size = size;
+		lots.push(p);
 		numLots++;
 	}
 
@@ -131,7 +133,7 @@ contract Parking {
 	}
 				
 	//changes state												//i = parkingLotIndex
-	function reserveSpot(string username, string password,uint i, uint start, uint stop) public payable returns (bool){
+	function reserveSpot(address user, string password,uint i, uint start, uint stop) public payable returns (bool){
 		if(msg.value>=lots[i].price*(stop-start)/(3600) ){
 			for (uint j = 0; j<lots[i].num; j++){
 					if(checkAvailability(lots[i].spots[j], start, stop)){
@@ -140,9 +142,9 @@ contract Parking {
 						recordID++;
 						lots[i].spots[j].records[lots[i].spots[j].numRecords] = b;
 						lots[i].spots[j].numRecords++;
-						userAcc[userAddress[username]].tx[userAcc[userAddress[username]].txCount] = b;
-						userAcc[userAddress[username]].txCount++;
-						etherAmount[userAddress[username]] += msg.value; 
+						userAcc[user].tx[userAcc[user].txCount] = b;
+						userAcc[user].txCount++;
+						etherAmount[user] += msg.value; 
 						return true;
 				}
 			}
@@ -152,19 +154,22 @@ contract Parking {
 
     //changes state
 	// index refers to booking index in struct user
-	function abandonSpot(string username, string password, uint index) public returns (bool) { 
-		if (!(index < userAcc[userAddress[username]].txCount)) return false;
-		uint ID = userAcc[userAddress[username]].tx[index].id;
-		uint lot = userAcc[userAddress[username]].tx[index].parkingLot;
-		uint spot = userAcc[userAddress[username]].tx[index].parkingSpot;
+	function abandonSpot(address user, string password, uint index) public returns (bool) { 
+		if (!(index < userAcc[user].txCount)) return false;
+		uint ID = userAcc[user].tx[index].id;
+		uint lot = userAcc[user].tx[index].parkingLot;
+		uint spot = userAcc[user].tx[index].parkingSpot;
 		address person = lots[lot].owner;
-		userAcc[userAddress[username]].tx[index] = userAcc[userAddress[username]].tx[userAcc[userAddress[username]].txCount - 1];
-		userAcc[userAddress[username]].txCount--;
+
+		userAcc[user].tx[index] = userAcc[user].tx[userAcc[user].txCount - 1];
+
+		userAcc[user].txCount--;
 		for (uint i = 0; i < lots[lot].spots[spot].numRecords; i++){
 			if (lots[lot].spots[spot].records[i].id == ID){
 				lots[lot].spots[spot].records[i] = lots[lot].spots[spot].records[lots[lot].spots[spot].numRecords-1];
 				lots[lot].spots[spot].numRecords--;
-				person.transfer(etherAmount[userAddress[username]]);
+				person.transfer(etherAmount[user]);
+				etherAmount[user] = 0;
 				return true;
 			}
 		}
