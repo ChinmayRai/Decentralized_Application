@@ -35,19 +35,22 @@ contract Parking {
 		booking [] tx;
 		uint txCount;
 	}
-
+    address overallOwner;
 	mapping (string => address) private userAddress;
 	mapping (address => userData) public userAcc; 
-	mapping (address => uint) public etherAmount;
-	parkingLot [] lots;
-	uint numLots;  // traverse lots using this because of logical deletion
-	uint recordID;
+	mapping (address => uint) private etherAmount;
+	parkingLot [] public lots;
+	uint public numLots;  // traverse lots using this because of logical deletion
+	uint private recordID;
 
+	//constructor
 	function Parking () public {
 		recordID = 1;
 		numLots = 0;
+		overallOwner = msg.sender;
 	}
 
+	//changes state
    	function signUp (string username, string password, address account) public returns (bool){
    		if (bytes(userAcc[account].password).length != 0) return false;
    		userAcc[account].password = password;
@@ -55,11 +58,12 @@ contract Parking {
    		userAddress[username] = account;
    		return true;
    	}
-
-	function authenticate  (string usr, string pwd) public returns(bool) {
+   	//view function
+	function authenticate  (string usr, string pwd) public view returns(bool)  {
 		return (compareStrings(pwd,userAcc[userAddress[usr]].password));
 	}
 
+	//view function
 	//returns an array of indices pertaining to array lots to retrieve information of properties owned by user
 	function ownerProperties (address user) public returns (uint []) { 
 		uint  [] storage a;
@@ -67,6 +71,7 @@ contract Parking {
 		return a;
 	}
 
+	//changes state
 	function addRentOutSpot(address owner, uint256 lat, uint256 long, string name, uint num, uint price, uint size) public {
 		// does not check if it exists from before
 		booking  [] b;
@@ -85,6 +90,7 @@ contract Parking {
 		numLots++;
 	}
 
+	//changes state
 	function removeRentProperty (address user, uint index) public returns (bool){  // index = index in lots of property
 		//check if it can be deleted at the moment?
 		if (lots[index].num == 0) return false;
@@ -97,11 +103,11 @@ contract Parking {
 		return true;
 	}
 
-	function nearLots(uint long, uint lat) public returns (uint []) {
+
+	//view functions
+	function nearLots(uint long, uint lat) public view returns (uint []) {
 		uint []  a;
 		uint [] distances; 
-		
-		return a;
 		uint max = 0;
 		for (uint i = 0; i<numLots; i++){
 		    distances.push((long-lots[i].long)*(long-lots[i].long) + (lat-lots[i].lat)*(lat-lots[i].lat));
@@ -121,26 +127,30 @@ contract Parking {
 		    threshold = min;
 		    min = max;
 		}
+		return a;
 	}
-													//i = parkingLotIndex
+				
+	//changes state												//i = parkingLotIndex
 	function reserveSpot(string username, string password,uint i, uint start, uint stop) public payable returns (bool){
-		for (uint j = 0; j<lots[i].num; j++){
-				if(checkAvailability(lots[i].spots[j], start, stop)){
-					address renter = msg.sender;
-					booking memory b = booking(recordID, renter, i, j, start, stop);
-					recordID++;
-					lots[i].spots[j].records[lots[i].spots[j].numRecords] = b;
-					lots[i].spots[j].numRecords++;
-					userAcc[userAddress[username]].tx[userAcc[userAddress[username]].txCount] = b;
-					userAcc[userAddress[username]].txCount++;
-					etherAmount[userAddress[username]] += msg.value; 
-					return true;
+		if(msg.value>=lots[i].price*(stop-start)/(3600) ){
+			for (uint j = 0; j<lots[i].num; j++){
+					if(checkAvailability(lots[i].spots[j], start, stop)){
+						address renter = msg.sender;
+						booking memory b = booking(recordID, renter, i, j, start, stop);
+						recordID++;
+						lots[i].spots[j].records[lots[i].spots[j].numRecords] = b;
+						lots[i].spots[j].numRecords++;
+						userAcc[userAddress[username]].tx[userAcc[userAddress[username]].txCount] = b;
+						userAcc[userAddress[username]].txCount++;
+						etherAmount[userAddress[username]] += msg.value; 
+						return true;
+				}
 			}
 		}
 		return false;
 	}
 
-
+    //changes state
 	// index refers to booking index in struct user
 	function abandonSpot(string username, string password, uint index) public returns (bool) { 
 		if (!(index < userAcc[userAddress[username]].txCount)) return false;
@@ -160,7 +170,8 @@ contract Parking {
 		}
 		return false;
 	}
-
+    
+    //private function 
 	function checkAvailability(parkingSpot s, uint start, uint stop) private returns (bool) {
 		for (uint i=0; i<s.numRecords; i++){
 			if(s.records[i].start < start && start < s.records[i].end ) return false;
@@ -169,9 +180,15 @@ contract Parking {
 		}
 		return true;
 	}
-
-	function compareStrings (string a, string b) public view returns (bool){
+    
+    //private function
+	function compareStrings (string a, string b) private view returns (bool){
        	return keccak256(a) == keccak256(b);
    	}
+ 
+    //deletes the contract  	
+   	function close() public  { //onlyOwner is custom modifier
+         if (msg.sender == overallOwner) selfdestruct(overallOwner);  // `owner` is the owners address
+    }
 
 }
