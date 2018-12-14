@@ -87,7 +87,6 @@
 	    </footer>
 	</div>
 
-
 	   
     <script type="text/javascript">
 
@@ -104,9 +103,9 @@
           alert("You not connected to ethereum");
         }
 
-        var abi=[];
+        var abi=[ { "constant": false, "inputs": [ { "name": "username", "type": "string" }, { "name": "password", "type": "string" }, { "name": "account", "type": "address" } ], "name": "signUp", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "spots", "outputs": [ { "name": "owner", "type": "address" }, { "name": "numBooking", "type": "uint256" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "bookings", "outputs": [ { "name": "spotId", "type": "uint256" }, { "name": "renter", "type": "address" }, { "name": "active", "type": "bool" }, { "name": "start", "type": "uint256" }, { "name": "end", "type": "uint256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userPass", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "i", "type": "uint256" }, { "name": "start", "type": "uint256" }, { "name": "stop", "type": "uint256" } ], "name": "reserveSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAddress", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "owner", "type": "address" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "name": "addRentOutSpot", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "close", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "account", "type": "address" }, { "name": "index", "type": "uint256" } ], "name": "abandonSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "numSpots", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "overallOwner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numBooking", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAcc", "outputs": [ { "name": "numParkingSpots", "type": "uint256" }, { "name": "numBooking", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ];
 
-        var contract = web3.eth.contract(abi).at(Contract_add);
+        var contract = web3.eth.contract(abi).at('0xAB91ee87750fE2fc61ea6fC1c02eecF1c6C25081');
 
 
         function signup(){

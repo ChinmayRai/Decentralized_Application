@@ -26,15 +26,15 @@ contract Parking {
 	}
 	
     address overallOwner;
-	mapping (address => string) private userPass;
-	mapping (string => address) private userAddress;
+	mapping (address => string) public userPass;
+	mapping (address => string) public userAddress;
 	mapping (address => userData) public userAcc; 
 	parkingSpot [] public spots;
 	uint public numSpots;  // traverse lots using this because of logical deletion
 	uint private recordID;
 
 	//constructor
-	function Parking () public {
+	constructor () public {
 		recordID = 1;
 		numSpots = 0;
 		overallOwner = msg.sender;
@@ -44,13 +44,13 @@ contract Parking {
    	function signUp (string username, string password, address account) public returns (bool){
    		if (bytes(userPass[account]).length != 0) return false;
    		userPass[account] = password;
-   		userAddress[username] = account;
+   		userAddress[account] = username;
    		return true;
    	}
    	
    	//view function
-	function authenticate  (string usr, string pwd) public view returns(bool)  {
-		return (compareStrings(pwd,userPass[userAddress[usr]]));
+	function authenticate  (address account, string pwd) public view returns(bool)  {
+		return (compareStrings(pwd,userPass[account]));
 	}
 
 	//view function
