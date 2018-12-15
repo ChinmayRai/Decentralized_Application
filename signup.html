@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     <script src="js/web3.min.js"></script>
+    <script src="js/web3.min.js"></script>
  
     
 	<title>Signup Page</title>
@@ -89,47 +89,47 @@
 
 	   
     <script type="text/javascript">
+        
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+    } else {
+      web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+    }
 
-        if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-        } else {
-          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-        }
+    try {
+      web3.eth.accounts;
+    }
+    catch(err) {
+      alert("You not connected to ethereum");
+    }
 
-        try {
-          web3.eth.accounts;
-        }
-        catch(err) {
-          alert("You not connected to ethereum");
-        }
+    var abi=[ { "constant": false, "inputs": [ { "name": "_username", "type": "string" }, { "name": "_password", "type": "string" }, { "name": "_account", "type": "address" } ], "name": "signUp", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "spots", "outputs": [ { "name": "name", "type": "string" }, { "name": "owner", "type": "address" }, { "name": "numBooking", "type": "uint256" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numUsers", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "bookings", "outputs": [ { "name": "spotId", "type": "uint256" }, { "name": "renter", "type": "address" }, { "name": "active", "type": "bool" }, { "name": "start", "type": "uint256" }, { "name": "end", "type": "uint256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userPass", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_i", "type": "uint256" }, { "name": "_start", "type": "uint256" }, { "name": "_stop", "type": "uint256" } ], "name": "reserveSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "close", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "userSpotIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_account", "type": "address" }, { "name": "_index", "type": "uint256" } ], "name": "abandonSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "numSpots", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "userBookingIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "overallOwner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numBooking", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_s", "type": "string" } ], "name": "hash", "outputs": [ { "name": "", "type": "bytes32" } ], "payable": false, "stateMutability": "pure", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAcc", "outputs": [ { "name": "numParkingSpots", "type": "uint256" }, { "name": "userNum", "type": "uint256" }, { "name": "numBooking", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "spotbookingIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "bytes32" } ], "name": "userAddress", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_name", "type": "string" }, { "name": "_owner", "type": "address" }, { "name": "_lat", "type": "int256" }, { "name": "_long", "type": "int256" }, { "name": "_price", "type": "uint256" } ], "name": "addRentOutSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ]
 
-        var abi=[ { "constant": false, "inputs": [ { "name": "username", "type": "string" }, { "name": "password", "type": "string" }, { "name": "account", "type": "address" } ], "name": "signUp", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "spots", "outputs": [ { "name": "owner", "type": "address" }, { "name": "numBooking", "type": "uint256" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "bookings", "outputs": [ { "name": "spotId", "type": "uint256" }, { "name": "renter", "type": "address" }, { "name": "active", "type": "bool" }, { "name": "start", "type": "uint256" }, { "name": "end", "type": "uint256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userPass", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "i", "type": "uint256" }, { "name": "start", "type": "uint256" }, { "name": "stop", "type": "uint256" } ], "name": "reserveSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAddress", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "owner", "type": "address" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "name": "addRentOutSpot", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "close", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "account", "type": "address" }, { "name": "index", "type": "uint256" } ], "name": "abandonSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "numSpots", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "overallOwner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numBooking", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAcc", "outputs": [ { "name": "numParkingSpots", "type": "uint256" }, { "name": "numBooking", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ];
+    var contract = web3.eth.contract(abi).at('0x397F01f0eA8567a3901cf33bD52d4A79484E8f76');
 
-        var contract = web3.eth.contract(abi).at('0xAB91ee87750fE2fc61ea6fC1c02eecF1c6C25081');
-
-
-        function signup(){
-            var username = document.getElementsByName("User_name")[0].value;
-            var pwd = document.getElementsByName("password")[0].value;
-            var add = document.getElementsByName("Address")[0].value;
-            var pwd1 = prompt("Confirm password:", "");
-            var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
-            var accpwd = prompt("Enter Ethereum Account Password:","");
-            if(web3.personal.unlockAccount(add,accpwd,15)==true){
-                if(pwd==pwd1){
-                    if(contract.signUp(username,pwd,add,txo)==true){alert("Signup completed!!");window.close();}
-                }
-                else alert("Try again!");
+    function signup(){
+        var username = document.getElementsByName("User_name")[0].value;
+        var pwd = document.getElementsByName("password")[0].value;
+        var add = document.getElementsByName("Address")[0].value;
+        var pwd1 = prompt("Confirm password:", "");
+        var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
+        var accpwd = prompt("Enter Ethereum Account Password:","");
+        if(web3.personal.unlockAccount(add,accpwd,15)==true){
+            if(pwd==pwd1){
+                if(contract.signUp(username,pwd,add,txo)==true){alert("Signup completed!!");window.close();}
             }
+            else alert("Try again!");
         }
+    }
 
-        function login_owner(){
-            window.location.href = "login.html" + "?" +"owner";
-        }
+    function login_owner(){
+        window.location.href = "login.html" + "?" +"owner";
+    }
 
-        function login_user(){
-            window.location.href = "login.html" + "?" +"user";
-        }
+    function login_user(){
+        window.location.href = "login.html" + "?" +"user";
+    }
+
     </script>
 
   

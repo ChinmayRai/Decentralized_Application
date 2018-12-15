@@ -43,9 +43,6 @@
                     <li>
                         <a onclick="login_user()">Property User Login</a>
                     </li>
-                    <li>
-                        <a href="settings.html">Account Settings</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -65,20 +62,26 @@
 
       try {web3.eth.accounts;}
       catch(err) {alert("You not connected to ethereum");}
-      var abi=[];
-      //var contract = web3.eth.contract(abi).at(Contract_add);
+
+      var abi=[ { "constant": false, "inputs": [ { "name": "_username", "type": "string" }, { "name": "_password", "type": "string" }, { "name": "_account", "type": "address" } ], "name": "signUp", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "spots", "outputs": [ { "name": "name", "type": "string" }, { "name": "owner", "type": "address" }, { "name": "numBooking", "type": "uint256" }, { "name": "lat", "type": "int256" }, { "name": "long", "type": "int256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numUsers", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "bookings", "outputs": [ { "name": "spotId", "type": "uint256" }, { "name": "renter", "type": "address" }, { "name": "active", "type": "bool" }, { "name": "start", "type": "uint256" }, { "name": "end", "type": "uint256" }, { "name": "price", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userPass", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_i", "type": "uint256" }, { "name": "_start", "type": "uint256" }, { "name": "_stop", "type": "uint256" } ], "name": "reserveSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "close", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "userSpotIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_account", "type": "address" }, { "name": "_index", "type": "uint256" } ], "name": "abandonSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "numSpots", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "userBookingIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "overallOwner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "numBooking", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_s", "type": "string" } ], "name": "hash", "outputs": [ { "name": "", "type": "bytes32" } ], "payable": false, "stateMutability": "pure", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "userAcc", "outputs": [ { "name": "numParkingSpots", "type": "uint256" }, { "name": "userNum", "type": "uint256" }, { "name": "numBooking", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" } ], "name": "spotbookingIndex", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "bytes32" } ], "name": "userAddress", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_name", "type": "string" }, { "name": "_owner", "type": "address" }, { "name": "_lat", "type": "int256" }, { "name": "_long", "type": "int256" }, { "name": "_price", "type": "uint256" } ], "name": "addRentOutSpot", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ];
+
+        var contract = web3.eth.contract(abi).at('0x397F01f0eA8567a3901cf33bD52d4A79484E8f76');
+
+        var user = contract.userAcc(add);
+
+        var numSpots = user[0].valueOf();
+        var userNum = user[1].valueOf();
 
       //var list = contract.ownerData(add)[0];
       var list = [1,2,3,4];
       var x="",i;
-      for (i = 1; i <= list.length; i++) {
-        var name = "halla";//contract.parkingLots(list[i-1])[3];
-        var lat = 38.74334;//contract.parkingLots(list[i-1]).[1][0]+contract.parkingLots(list[i-1]).[1][0]/60;
-        var long = 120.433;//contract.parkingLots(list[i-1]).[2][0]+;
-        var num = 6;//contract.parkingLots(list[i-1]).[5];
-        var cost = 12;//contract.parkingLots(list[i-1]).[6];
-        var size = 1;//contract.parkingLots(list[i-1]).[7];
-        x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>Property " + i + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>" +name +"</span><span><a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><br><span> no. of spots :   "+ num + "</span><span>    @" + cost +"   ETH/hr</span><br><br><span>Spot number <input type='number' name='i'></span><span><button type='button' class='btn btn-primary btn' onclick='info("+list[i-1]+");'>Get Info</button></span><br><span>Status : <div id='status'></div></span>"+ "</div></div></div>";
+      for (i = 1; i <= numSpots; i++) {
+        var a = contract.spots(contract.userSpotIndex(userNum,i-1).valueOf())
+        var name = a[0];//contract.parkingLots(list[i-1])[3];
+        var lat = a[3].valueOf()/1000000;//contract.parkingLots(list[i-1]).[1][0]+contract.parkingLots(list[i-1]).[1][0]/60;
+        var long = a[4].valueOf()/1000000;//contract.parkingLots(list[i-1]).[2][0]+;
+        var cost = a[5].valueOf();//contract.parkingLots(list[i-1]).[6];
+        x=x+"<div class='panel panel-default'><div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "'>Property " + i + "</a></h4></div><div id='collapse" + i + "' class='panel-collapse collapse'><div class='panel-body'><span>" +name +"</span><span><a href='onmap.html?"+lat+"&"+long+"'>     (" + lat + ", "+ long+")</a></span><br><span>    @" + cost +"   ETH/hr</span><br>"+ "</div></div></div>";
       }
        document.getElementById("cont").innerHTML = x;
        function info(n){
@@ -87,6 +90,29 @@
         if(arr[i][0]){document.getElementById('status').innerText="Rented by:"+arr[i][1];}
         else{document.getElementById('status').innerText="Not Rented";}
        }
+
+       function addRentOutSpot(){
+        var address = document.getElementsByName("address")[0].value;
+        var lat = document.getElementsByName("lat")[0].value*1000000;
+        var long = document.getElementsByName("long")[0].value*1000000;
+        var cost = document.getElementsByName("cost")[0].value;
+        var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
+
+        var accpwd = prompt("Enter Ethereum Account Password:","");
+        if(web3.personal.unlockAccount(add,accpwd,15)==true){
+            contract.addRentOutSpot(address, add, lat, long, cost,txo);
+        }     
+
+      }
+
+      function login_owner(){
+        window.open("login.html" + "?" +"owner", '_blank');
+        window.close();
+      }
+      function login_user(){
+        window.open("login.html" + "?" +"user", '_blank');
+        window.close();
+      }
           
     </script>
 
@@ -103,8 +129,8 @@
 		            Location Address <input type="text" name="address">
               </span>
               <span> 
-                Number of parking spots <input type="Number" name="num"> 
-              </span> 
+                Cost per Hour <input type="Number" name="cost"> 
+              </span>
             </h4>
 		      </div>
 		        
@@ -113,31 +139,17 @@
           <div class="row">
              <h4 align="center">
               <span>
-                Longitude <input type="number" step="0.000001"name="lat">
+                Latitude <input type="number" step="0.000001"name="lat">
               </span>
               <span>                    
-                Latitude <input type="number" step="0.000001"name="long">
+                Longitude  <input type="number" step="0.000001"name="long">
               </span>              
             </h4>
           </div>
             
           <hr>
 
-		      <div class="row">
-		        <h4 align="center">
-              <span>
-		             Size :
-                <label class="checkbox-inline"><input type="checkbox" name="size" value="0">Small</label>
-                <label class="checkbox-inline"><input type="checkbox" name="size" value="1">Medium</label>
-                <label class="checkbox-inline"><input type="checkbox" name="size" value="2">Big</label>  
-              </span>   
-              <span> 
-                Cost per Hour <input type="Number" name="cost"> 
-              </span>
-		        </h4>
-		      </div>
-		
-		      <hr>
+		      
 		
 		      <div class="row">
 		        <h3 align="center">
@@ -160,50 +172,7 @@
 
 		</div>
 
-	        
-    <script type="text/javascript">
-
-      var add = decodeURIComponent(window.location.search).substring(1);
-      if (typeof web3 !== 'undefined') {
-          web3 = new Web3(web3.currentProvider);
-      } else {
-        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-      }
-      try {
-        web3.eth.accounts;
-      }
-      catch(err) {
-        alert("You not connected to ethereum");
-      }
-      var abi=[];
-      var contract = web3.eth.contract(abi).at(Contract_add);
-
-      function addRentOutSpot(){
-        var address = document.getElementsByName("address")[0].value;
-        var lat = document.getElementsByName("lat")[0].value;
-        var long = document.getElementsByName("long")[0].value;
-        var cost = document.getElementsByName("cost")[0].value;
-        var num = document.getElementsByName("num")[0].value;
-        var size = document.getElementsByName("size")[0].value;
-        var txo = {from:add, gasPrice:'20000000000',gas:'1000000'};
-
-        var accpwd = prompt("Enter Ethereum Account Password:","");
-        if(web3.personal.unlockAccount(add,accpwd,15)==true){
-            contract.addRentOutSpot(add, lat, long, address, num, cost, size,txo);
-        }     
-
-      }
-
-      function login_owner(){
-        window.open("login.html" + "?" +"owner", '_blank');
-        window.close();
-      }
-      function login_user(){
-        window.open("login.html" + "?" +"user", '_blank');
-        window.close();
-      }
-    </script>
-
+	 
   </body>
 </html>
 
