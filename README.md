@@ -1,6 +1,6 @@
 ## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/ChinmayRai/Decentralized_Application/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This repo contains information abou the SharePark Dapp.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
